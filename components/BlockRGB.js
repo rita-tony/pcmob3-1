@@ -6,8 +6,7 @@ export default function BlockGRB(props) {
         <View
             style = {{
                 backgroundColor: `rgb(${props.red}, ${props.green}, ${props.blue})`,
-                padding: 30,
-                width: '100%',
+                padding: props.tileDimension,
             }}>
         </View>
     );

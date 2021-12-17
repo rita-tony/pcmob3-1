@@ -1,11 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, Dimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
 import BlockGRB from './components/BlockRGB';
 
+const screenWidth = Dimensions.get("window").width;
+const numColumns = 4;
+const tileSize = screenWidth / numColumns;
 
 function HomeScreen ({ navigation }) {
   const [colorArray, setColorArray] = useState(
@@ -26,8 +29,8 @@ function HomeScreen ({ navigation }) {
 
   function renderItem({item}) {
     return (
-      <TouchableOpacity onPress={ () => navigation.navigate("Details Screen", { ...item }) }>
-        <BlockGRB red={item.red} green={item.green} blue={item.blue} />
+      <TouchableOpacity style={styles.tileSizeStyle} onPress={ () => navigation.navigate("Details Screen", { ...item }) }>
+        <BlockGRB red={item.red} green={item.green} blue={item.blue} tileDimension={tileSize} />
       </TouchableOpacity>
     );
   }
@@ -51,16 +54,10 @@ function HomeScreen ({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      {/* Add Reset Buton */}
-      <TouchableOpacity style={{height:40, justifyContent: "center"}} onPress={resetColor}>  
-        <Text style={{color: "red", fontSize: 20}}>
-          Reset
-        </Text>
-      </TouchableOpacity>
-      <FlatList style={styles.list} data={colorArray} renderItem={renderItem} />
+    <View>
+      <FlatList data={colorArray} renderItem={renderItem} numColumns={numColumns}/>
     </View>
-  );
+   );
 }
 
 
@@ -99,8 +96,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  list: {
-    width: "100%",
+  tileSizeStyle: {
+    aspectRatio: 1,
+    flex: 1/numColumns,
   },
 
   detailText: {
