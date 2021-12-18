@@ -11,15 +11,16 @@ const numColumns = 4;
 const tileSize = screenWidth / numColumns;
 
 function HomeScreen ({ navigation }) {
-  const [colorArray, setColorArray] = useState(
-    [
-      { red: 255, green: 0, blue: 0, id: "0" },
-      { red: 0, green: 255, blue: 0, id: "1"},
-      { red: 0, green: 0, blue: 255, id: "2" },
-    ]
-  );
+  const colors = [
+    { red: 255, green: 0, blue: 0, id: "0" },
+    { red: 0, green: 255, blue: 0, id: "1"},
+    { red: 0, green: 0, blue: 255, id: "2" },
+  ];
 
-  {/* Add Color Buton  in the title bar*/}
+  const [colorArray, setColorArray] = useState(colors);
+
+  {/* 1. it will run when any component in Home Screen is updated, or render.
+  2. Add Color Buton  in the title bar*/}
   useEffect( () => {
     navigation.setOptions({
       headerLeft: () => <Button onPress={resetColor} title="Reset Color" />,
@@ -63,13 +64,13 @@ function HomeScreen ({ navigation }) {
 
 function DetailsScreen({route}) {
   const {red, green, blue} = route.params;
-
+ 
   return (
     <View style={[ styles.container, {backgroundColor: `rgb(${red}, ${green}, ${blue})`}, ]}>
       <View style={{ padding:30 }}>
-        <Text style={styles.detailText}>Red: {red}</Text>
-        <Text style={styles.detailText}>Green: {green}</Text>
-        <Text style={styles.detailText}>Blue: {blue}</Text>
+        <Text style={[(red + green + blue) >= 100 ? styles.detailWhiteText : styles.detailBlackText]}>Red: {red}</Text>
+        <Text style={[(red + green + blue) >= 100 ? styles.detailWhiteText : styles.detailBlackText]}>Green: {green}</Text>
+        <Text style={[(red + green + blue) >= 100 ? styles.detailWhiteText : styles.detailBlackText]}>Blue: {blue}</Text>
       </View>
     </View>
   ); 
@@ -101,8 +102,15 @@ const styles = StyleSheet.create({
     flex: 1/numColumns,
   },
 
-  detailText: {
+  detailBlackText: {
     fontSize: 24,
     marginBottom: 20,
+    color: "black",
+  },
+
+  detailWhiteText: {
+    fontSize: 24,
+    marginBottom: 20,
+    color: "white",
   },
 });
