@@ -55,7 +55,7 @@ function HomeScreen ({ navigation }) {
 
   return (
     <View>
-      <FlatList data={colorArray} renderItem={renderItem} numColumns={numColumns}/>
+      <FlatList data={colorArray} renderItem={renderItem} numColumns={numColumns} keyExtractor={(Item) => Item.id}/>
     </View>
    );
 }
