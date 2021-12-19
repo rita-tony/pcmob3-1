@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, Dimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-
 import BlockGRB from './components/BlockRGB';
 
 const screenWidth = Dimensions.get("window").width;
@@ -64,13 +63,22 @@ function HomeScreen ({ navigation }) {
 
 function DetailsScreen({route}) {
   const {red, green, blue} = route.params;
+
+  function isLightColor (r, g, b)
+  {
+    let hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b))
+    if (hsp > 127.5)
+      return true;
+    else
+      return false;
+  }
  
   return (
     <View style={[ styles.container, {backgroundColor: `rgb(${red}, ${green}, ${blue})`}, ]}>
       <View style={{ padding:30 }}>
-        <Text style={[(red + green + blue) >= 100 ? styles.detailWhiteText : styles.detailBlackText]}>Red: {red}</Text>
-        <Text style={[(red + green + blue) >= 100 ? styles.detailWhiteText : styles.detailBlackText]}>Green: {green}</Text>
-        <Text style={[(red + green + blue) >= 100 ? styles.detailWhiteText : styles.detailBlackText]}>Blue: {blue}</Text>
+        <Text style={[isLightColor(red,green,blue) ? styles.detailBlackText : styles.detailWhiteText]}>Red: {red}</Text>
+        <Text style={[isLightColor(red,green,blue) ? styles.detailBlackText : styles.detailWhiteText]}>Green: {green}</Text>
+        <Text style={[isLightColor(red,green,blue) ? styles.detailBlackText : styles.detailWhiteText]}>Blue: {blue}</Text>
       </View>
     </View>
   ); 
